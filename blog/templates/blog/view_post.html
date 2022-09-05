@@ -1,0 +1,27 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<br>
+
+<div class = "container col-lg-10 col-md-8 col-sm-10">
+<br>
+<br>
+
+
+    <h5>{{ post.title }}</h5>
+    <p><small class="text-muted">{{ post.category_id.tech }} -> {{ post.category_id.usecase }}</small></p>
+    <p>{{ post.body_content }}</p>
+    <p><small class="text-muted">{{ post.author }} - {{ post.date_create|date:"d/m/Y" }}</small></p>
+  
+</div>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block script %}
+
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<br>
+
+<div class = "container col-lg-10 col-md-8 col-sm-10">
+<br>
+<br>
+
+
+<form method="post">
+    {% csrf_token %}
+
+    <div class="row">
+        <div class="form-group col-md-4">
+            <label for="inputLogin">Login</label>
+            <input type="text" class="form-control" id="inputLogin" name = "username" placeholder="Login" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-4">
+            <label for="inputPassword">Senha</label>
+            <input type="text" class="form-control" id="inputPassword" name = "password" placeholder="Senha" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success col-md-1">Login</button>
+    </form>
+</div>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block script %}
+
+
+{% endblock %}

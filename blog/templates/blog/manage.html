@@ -1,0 +1,255 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<br>
+
+<div class = "container col-lg-10 col-md-8 col-sm-10">
+<br>
+
+    <div class="list-group  my-4 ">
+        <div class="d-flex w-100 justify-content-between align-items-center ">
+            <a href='{% url "view_blog:create_post" %}' class="list-group-item list-group-item-action" >    
+            
+            <div class="my-1 col-8">
+                <h1 class="text-muted"><i class="material-icons text-secondary" style="font-size:32px;" >add_box</i> Novo Post</h1>
+            </div>
+        </a>
+        </div>   
+    </div>
+
+<br>
+  <nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link active" id="nav-allPosts-tab" data-toggle="tab" href="#nav-allPosts" role="tab" aria-controls="nav-allPosts" aria-selected="true">Todos</a>
+      <a class="nav-item nav-link" id="nav-allPubli-tab" data-toggle="tab" href="#nav-allPubli" role="tab" aria-controls="nav-allPubli" aria-selected="false">Publicados</a>
+      <a class="nav-item nav-link" id="nav-allUnpubli-tab" data-toggle="tab" href="#nav-allUnpubli" role="tab" aria-controls="nav-allUnpubli" aria-selected="false">Não Publicados</a>
+    </div>
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-allPosts" role="tabpanel" aria-labelledby="nav-allPosts-tab"> 
+        {% for post in posts %}
+        <div class="list-group  my-4 ">
+            {% if post.publi %}
+                <a  class="list-group-item list-group-item-action flex-column border-success" >
+            {% else %}
+                <a  class="list-group-item list-group-item-action flex-column border-warning" >
+            {% endif  %}  
+                <div class="d-flex w-100 justify-content-between align-items-center ">
+                    <div class="my-1 col-2">
+                        <h5>{{ post.title }}</h5>
+                    </div>       
+                    <div class="my-1 col-1">
+                        <spam class="small">Autor</spam>
+                        <h6> {{ post.author }}</h6>
+                    </div>
+                    
+                    <div class="my-1 col-1">
+                        <spam class="small">Data</spam>
+                        <h6><time datetime="YYYY-MM-DD"> {{ post.date_create|date:"d/m/Y" }}</h6>
+                    </div>
+
+                    <div class="my-1 col-1">
+                        <spam class="small">Tecnologia</spam>
+                        <h6> {{ post.category_id.tech }}</h6>
+                    </div>
+
+                    <div class="my-1 col-1">
+                        <spam class="small">Categoria</spam>
+                        <h6> {{ post.category_id.usecase }}</h6>
+                    </div>
+                                    
+
+                    <div class=" py-1 mx-2 col-2 btn-group" role="group">
+                        <button type="button" class="btn btn-info"  data-toggle="tooltip" data-placement="top" title="Editar Post" onclick="window.location='{% url 'view_blog:edit_post' post.id %}';"><i class="material-icons">edit</i></button>
+                        {% if post.publi %}
+                            <button type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Desativar Post" onclick="publish_post({{post.id}}, true)" ><i class="material-icons">visibility_off</i></button>
+                        {% else %}
+                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Publicar Post" onclick="publish_post({{post.id}}, false)" ><i class="material-icons">visibility</i></button>
+                        {% endif  %}
+                        <button type="button" class="btn btn-danger"  data-toggle="tooltip" data-placement="top" title="Deletar Post" onclick="show_delete_modal({{post.id}})"><i class="material-icons">delete</i></button>
+                    </div>
+                </div>
+            </a>    
+        </div>
+        {% endfor %}
+    </div>
+    <div class="tab-pane fade" id="nav-allPubli" role="tabpanel" aria-labelledby="nav-allPubli-tab">
+        {% for post in posts %}
+        {% if post.publi %}
+        <div class="list-group  my-4 ">
+                <a  class="list-group-item list-group-item-action flex-column border-success" >
+                <div class="d-flex w-100 justify-content-between align-items-center ">
+                    <div class="my-1 col-2">
+                        <h5>{{ post.title }}</h5>
+                    </div>       
+                    <div class="my-1 col-1">
+                        <spam class="small">Autor</spam>
+                        <h6> {{ post.author }}</h6>
+                    </div>
+                    
+                    <div class="my-1 col-1">
+                        <spam class="small">Data</spam>
+                        <h6><time datetime="YYYY-MM-DD"> {{ post.date_create|date:"d/m/Y" }}</h6>
+                    </div>
+
+                    <div class="my-1 col-1">
+                        <spam class="small">Tecnologia</spam>
+                        <h6> {{ post.category_id.tech }}</h6>
+                    </div>
+
+                    <div class="my-1 col-1">
+                        <spam class="small">Categoria</spam>
+                        <h6> {{ post.category_id.usecase }}</h6>
+                    </div>
+                                    
+
+                    <div class=" py-1 mx-2 col-2 btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-info"  data-toggle="tooltip" data-placement="top" title="Editar Post" onclick="window.location='{% url 'view_blog:edit_post' post.id %}';"><i class="material-icons">edit</i></button>
+                        {% if post.publi %}
+                            <button type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Desativar Post" onclick="publish_post({{post.id}}, true)" ><i class="material-icons">visibility_off</i></button>
+                        {% else %}
+                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Publicar Post" onclick="publish_post({{post.id}}, false)" ><i class="material-icons">visibility</i></button>
+                        {% endif  %}
+                        <button type="button" class="btn btn-danger"  data-toggle="tooltip" data-placement="top" title="Deletar Post" onclick="show_delete_modal({{post.id}})"><i class="material-icons">delete</i></button>
+                    </div>
+                </div>
+                </a>   
+            </div>
+            {% endif  %}  
+        {% endfor %}
+    </div>
+    <div class="tab-pane fade" id="nav-allUnpubli" role="tabpanel" aria-labelledby="nav-allUnpubli-tab">
+        {% for post in posts %}
+        {% if not post.publi %}
+            <div class="list-group  my-4 ">
+                <a class="list-group-item list-group-item-action flex-column border-warning" >
+                <div class="d-flex w-100 justify-content-between align-items-center ">
+                    <div class="my-1 col-2">
+                        <h5>{{ post.title }}</h5>
+                    </div>       
+                    <div class="my-1 col-1">
+                        <spam class="small">Autor</spam>
+                        <h6> {{ post.author }}</h6>
+                    </div>
+                    
+                    <div class="my-1 col-1">
+                        <spam class="small">Data</spam>
+                        <h6><time datetime="YYYY-MM-DD"> {{ post.date_create|date:"d/m/Y" }}</h6>
+                    </div>
+
+                    <div class="my-1 col-1">
+                        <spam class="small">Tecnologia</spam>
+                        <h6> {{ post.category_id.tech }}</h6>
+                    </div>
+
+                    <div class="my-1 col-1">
+                        <spam class="small">Categoria</spam>
+                        <h6> {{ post.category_id.usecase }}</h6>
+                    </div>
+                                    
+
+                    <div class=" py-1 mx-2 col-2 btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-info"  data-toggle="tooltip" data-placement="top" title="Editar Post" onclick="window.location='{% url 'view_blog:edit_post' post.id %}';"><i class="material-icons">edit</i></button>
+                        {% if post.publi %}
+                            <button type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Desativar Post" onclick="publish_post({{post.id}}, true)" ><i class="material-icons">visibility_off</i></button>
+                        {% else %}
+                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Publicar Post" onclick="publish_post({{post.id}}, false)" ><i class="material-icons">visibility</i></button>
+                        {% endif  %}
+                        <button type="button" class="btn btn-danger"  data-toggle="tooltip" data-placement="top" title="Deletar Post" onclick="show_delete_modal({{post.id}})"><i class="material-icons">delete</i></button>
+                    </div>
+                </div>
+                </a>   
+            </div>
+            {% endif  %}  
+        {% endfor %}
+    </div>
+  </div>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block script %}
+
+<script>
+
+
+    function publish_post(id, is_publi){
+        console.log(id);
+        
+        if(is_publi == true){
+            bootbox.confirm({
+                message: "Deseja retirar a publicação do post?",
+                centerVertical: true,
+                buttons: {
+                    confirm: {
+                        label: 'Confirmar',
+                        className: 'btn-danger'
+                    },
+                    cancel: {
+                        label: 'Voltar',
+                        className: 'btn'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true)
+                    {
+                        window.location = ('/blog/published/'+id+'/False')
+                        
+                    }
+                }
+            });
+        }
+        else
+        {
+            bootbox.confirm({
+                message: "Deseja publicar o post?",
+                centerVertical: true,
+                buttons: {
+                    confirm: {
+                        label: 'Publicar',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Voltar',
+                        className: 'btn'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true)
+                    {
+                        window.location = ('/blog/published/'+id+'/True')
+                    }
+                }
+            });
+        }
+    };
+
+    function show_delete_modal(id){
+        bootbox.confirm({
+            message: "Deseja realizar a exlusão do post?",
+            centerVertical: true,
+            buttons: {
+                confirm: {
+                    label: 'Excluir',
+                    className: 'btn-danger'
+                },
+                cancel: {
+                    label: 'Voltar',
+                    className: 'btn'
+                }
+            },
+            callback: function (result) {
+                if (result == true)
+                {
+                    window.location = ('/blog/delete/'+id)
+                }
+            }
+        });
+    };
+    
+</script>
+
+{% endblock %}

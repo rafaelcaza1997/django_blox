@@ -1,0 +1,42 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<br>
+
+
+
+<div class = "row">
+<div class = "container col-lg-8 col-md-8 col-sm-10">
+<br>
+<br>
+    {% for post in posts %}
+        <div class="list-group  my-4">
+            <a href='{% url "view_blog:view_post" post.id %}' class="list-group-item list-group-item-action flex-column">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text"><small class="text-muted">{{ post.category_id.tech }} -> {{ post.category_id.usecase }}</small></p>
+                    <p class="card-text">{{ post.description }}</p>
+                    <p class="card-text"><small class="text-muted">{{ post.author }} - {{ post.date_create|date:"d/m/Y" }}</small></p>
+                </div>
+            </a>    
+        </div>
+    {% endfor %}
+
+    </div>
+    <div class="container  col-lg-1 col-md-3 col-sm-12 list-group">
+        <a href='{% url "view_blog:all_publi_posts" %}' class="list-group-item list-group-item-action">Todos</a>
+        {% for tech in tech_options %}
+        <a href='{% url "view_blog:view_all_publi_posts_tech" tech.id %}' class="list-group-item list-group-item-action">{{tech.tech}}</a>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+
+{% block script %}
+
+
+{% endblock %}
